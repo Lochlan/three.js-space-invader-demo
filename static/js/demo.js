@@ -90,7 +90,10 @@ function init() {
         allMeshes.push(pixelMesh);
     });
 
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     document.body.appendChild(renderer.domElement);
