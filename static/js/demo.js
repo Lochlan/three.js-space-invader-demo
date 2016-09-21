@@ -1,7 +1,4 @@
 var scene, camera, renderer;
-var geometry, material;
-
-var allMeshes;
 
 var spaceInvaderPixelCoordinates = [
     [3, 0, 0],
@@ -70,25 +67,24 @@ function init() {
     camera.position.y = 4;
     camera.position.z = 10;
 
-    allMeshes = [];
+    var totalGeometry = new THREE.Geometry();
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
 
-    geometry = new THREE.BoxGeometry(1, 1, 1);
+    var material = new THREE.MeshBasicMaterial({color: 0xff00ff});
+    var material2 = new THREE.MeshBasicMaterial({color: 0x000000, wireframe: true});
 
-    material = new THREE.MeshBasicMaterial({color: 0xff00ff});
     spaceInvaderPixelCoordinates.forEach(function (coordinates) {
         var pixelMesh = new THREE.Mesh(geometry, material);
         pixelMesh.position.set(coordinates[0], coordinates[1], coordinates[2]);
-        scene.add(pixelMesh);
-        allMeshes.push(pixelMesh);
+        pixelMesh.updateMatrix();
+        totalGeometry.merge(pixelMesh.geometry, pixelMesh.matrix);
     });
 
-    material2 = new THREE.MeshBasicMaterial({color: 0x000000, wireframe: true});
-    spaceInvaderPixelCoordinates.forEach(function (coordinates) {
-        var pixelMesh = new THREE.Mesh(geometry, material2);
-        pixelMesh.position.set(coordinates[0], coordinates[1], coordinates[2]);
-        scene.add(pixelMesh);
-        allMeshes.push(pixelMesh);
-    });
+    var totalGeometryMesh = new THREE.Mesh(totalGeometry, material);
+    scene.add(totalGeometryMesh);
+
+    var totalGeometryMesh2 = new THREE.Mesh(totalGeometry, material2);
+    scene.add(totalGeometryMesh2);
 
     renderer = new THREE.WebGLRenderer({
         alpha: true,
