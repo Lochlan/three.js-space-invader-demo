@@ -106,6 +106,9 @@ document.addEventListener('mousemove', function (event) {
     var cursorXPercentFromCenter = (event.x / window.innerWidth - 0.5) * 2;
     var cursorYPercentFromCenter = (event.y / window.innerHeight - 0.5) * 2;
 
+    totalGeometryMesh.position.x = 5 * cursorXPercentFromCenter;
+    totalGeometryMesh.position.y = 3 * -cursorYPercentFromCenter;
+
     totalGeometryMesh.rotation.x = (Math.PI / 8) * cursorYPercentFromCenter;
     totalGeometryMesh.rotation.y = (Math.PI / 8) * cursorXPercentFromCenter;
 });
