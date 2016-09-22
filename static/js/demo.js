@@ -57,9 +57,6 @@ var spaceInvaderPixelCoordinates = [
     [3, 4, 0],
 ];
 
-init();
-animate();
-
 function init() {
     scene = new THREE.Scene();
 
@@ -112,3 +109,6 @@ document.addEventListener('mousemove', function (event) {
     totalGeometryMesh.rotation.x = (Math.PI / 8) * cursorYPercentFromCenter;
     totalGeometryMesh.rotation.y = (Math.PI / 8) * cursorXPercentFromCenter;
 });
+
+init();
+animate();
