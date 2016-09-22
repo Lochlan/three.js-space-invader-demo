@@ -1,5 +1,7 @@
 var scene, camera, renderer;
-var totalGeometryMesh;
+var group = new THREE.Group();
+var hasClicked = false;
+var randomUnitVectors;
 
 var spaceInvaderPixelCoordinates = [
     [-2, -3, 0],
@@ -74,11 +76,10 @@ function init() {
         var pixelMesh = new THREE.Mesh(geometry, material);
         pixelMesh.position.set(coordinates[0], coordinates[1], coordinates[2]);
         pixelMesh.updateMatrix();
-        totalGeometry.merge(pixelMesh.geometry, pixelMesh.matrix);
+        group.add(pixelMesh);
     });
 
-    totalGeometryMesh = new THREE.Mesh(totalGeometry, material);
-    scene.add(totalGeometryMesh);
+    scene.add(group);
 
     var light = new THREE.PointLight(0xffffff);
     light.position.set(0, 0, 1000);
@@ -96,19 +97,46 @@ function init() {
 function animate() {
     requestAnimationFrame(animate);
 
+    if (hasClicked) {
+        group.children.forEach(function (mesh, index) {
+            mesh.position.x += randomUnitVectors[index].x;
+            mesh.position.y += randomUnitVectors[index].y;
+            mesh.position.z += randomUnitVectors[index].z;
+        });
+    }
+
     renderer.render(scene, camera);
 }
 
-document.addEventListener('mousemove', function (event) {
+function onMouseMove(event) {
     var cursorXPercentFromCenter = (event.x / window.innerWidth - 0.5) * 2;
     var cursorYPercentFromCenter = (event.y / window.innerHeight - 0.5) * 2;
 
-    totalGeometryMesh.position.x = 5 * cursorXPercentFromCenter;
-    totalGeometryMesh.position.y = 3 * -cursorYPercentFromCenter;
+    group.position.x = 5 * cursorXPercentFromCenter;
+    group.position.y = 3 * -cursorYPercentFromCenter;
 
-    totalGeometryMesh.rotation.x = (Math.PI / 8) * cursorYPercentFromCenter;
-    totalGeometryMesh.rotation.y = (Math.PI / 8) * cursorXPercentFromCenter;
-});
+    group.rotation.x = (Math.PI / 8) * cursorYPercentFromCenter;
+    group.rotation.y = (Math.PI / 8) * cursorXPercentFromCenter;
+};
+
+
+function onClick(event) {
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('click', onClick);
+
+    randomUnitVectors = group.children.map(function (mesh) {
+        return {
+            x: Math.random() * 2 - 1,
+            y: Math.random() * 2 - 1,
+            z: Math.random() * 2 - 1,
+        };
+    });
+
+    hasClicked = true;
+}
+
+document.addEventListener('mousemove', onMouseMove);
+document.addEventListener('click', onClick);
 
 init();
 animate();
