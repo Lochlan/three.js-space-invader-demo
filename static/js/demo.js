@@ -66,7 +66,7 @@ function init() {
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.x = 0;
     camera.position.y = 0;
-    camera.position.z = 50;
+    camera.position.z = 30;
 
     var totalGeometry = new THREE.Geometry();
     var geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -95,7 +95,13 @@ function init() {
 function animate() {
     requestAnimationFrame(animate);
 
-    totalGeometryMesh.rotation.y += 0.05;
-
     renderer.render(scene, camera);
 }
+
+document.addEventListener('mousemove', function (event) {
+    var cursorXPercentFromCenter = (event.x / window.innerWidth - 0.5) * 2;
+    var cursorYPercentFromCenter = (event.y / window.innerHeight - 0.5) * 2;
+
+    totalGeometryMesh.rotation.y = (Math.PI / 8) * cursorXPercentFromCenter;
+    totalGeometryMesh.rotation.x = (Math.PI / 8) * cursorYPercentFromCenter;
+});
