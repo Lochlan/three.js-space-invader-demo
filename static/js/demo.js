@@ -102,6 +102,10 @@ function animate() {
             mesh.position.x += randomUnitVectors[index].x;
             mesh.position.y += randomUnitVectors[index].y;
             mesh.position.z += randomUnitVectors[index].z;
+
+            mesh.rotation.x += randomUnitVectors[index].x / 10;
+            mesh.rotation.y += randomUnitVectors[index].y / 10;
+            mesh.rotation.z += randomUnitVectors[index].z / 10;
         });
     }
 
