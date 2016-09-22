@@ -71,7 +71,7 @@ function init() {
     var totalGeometry = new THREE.Geometry();
     var geometry = new THREE.BoxGeometry(1, 1, 1);
 
-    var material = new THREE.MeshBasicMaterial({color: 0xff00ff});
+    var material = new THREE.MeshLambertMaterial({color: 0xff00ff});
 
     spaceInvaderPixelCoordinates.forEach(function (coordinates) {
         var pixelMesh = new THREE.Mesh(geometry, material);
@@ -82,6 +82,10 @@ function init() {
 
     totalGeometryMesh = new THREE.Mesh(totalGeometry, material);
     scene.add(totalGeometryMesh);
+
+    var light = new THREE.PointLight(0xffffff);
+    light.position.set(0, 0, 1000);
+    scene.add(light);
 
     renderer = new THREE.WebGLRenderer({
         alpha: true,
@@ -102,6 +106,6 @@ document.addEventListener('mousemove', function (event) {
     var cursorXPercentFromCenter = (event.x / window.innerWidth - 0.5) * 2;
     var cursorYPercentFromCenter = (event.y / window.innerHeight - 0.5) * 2;
 
-    totalGeometryMesh.rotation.y = (Math.PI / 8) * cursorXPercentFromCenter;
     totalGeometryMesh.rotation.x = (Math.PI / 8) * cursorYPercentFromCenter;
+    totalGeometryMesh.rotation.y = (Math.PI / 8) * cursorXPercentFromCenter;
 });
